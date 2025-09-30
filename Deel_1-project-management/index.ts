@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
+import { connectDB, projectsCollection, seed } from "./database";
 
 dotenv.config();
 
@@ -15,12 +16,11 @@ app.set("views", path.join(__dirname, "views"));
 app.set("port", process.env.PORT ?? 3000);
 
 app.get("/", (req, res) => {
-    res.render("index", {
-        title: "Hello World",
-        message: "Hello World"
-    })
+    
 });
 
-app.listen(app.get("port"), () => {
+app.listen(app.get("port"), async () => {
+    await connectDB();
+    await seed();
     console.log("Server started on http://localhost:" + app.get("port"));
 });
